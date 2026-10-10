@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Sobre - Termohigrometro{% endblock %}
+{% block content %}
+<div class="card about">
+  <h2>Sobre o software</h2>
+  <p><strong>HP3001 Logger</strong> e um sistema de monitoramento e registro de
+  temperatura e umidade para o termohigrometro <strong>Impac HP3001</strong>,
+  conectado por cabo USB.</p>
+
+  <h3>Para que serve</h3>
+  <ul>
+    <li>Le automaticamente os dados do equipamento pela porta USB.</li>
+    <li>Grava cada leitura (data/hora, canal, temperatura e umidade) em banco de dados.</li>
+    <li>Permite consultar o historico com filtros por periodo e canal.</li>
+    <li>Exporta os registros para Excel (.xlsx), para fins de auditoria.</li>
+    <li>Coleta em segundo plano, sem precisar manter uma janela aberta.</li>
+    <li>Intervalo de coleta configuravel (de 1 segundo ate 1 vez por dia).</li>
+  </ul>
+
+  <h3>Tecnologias</h3>
+  <p>Python, Flask (arquitetura MVC), SQLAlchemy (SQLite ou SQL Server),
+  Chart.js, openpyxl e PyInstaller.</p>
+
+  <h3>Desenvolvedor</h3>
+  <p><strong>Eduardo Souza</strong> &mdash; idealizacao e desenvolvimento.</p>
+
+  <p class="muted">Protocolo de comunicacao baseado no trabalho publico de
+  engenharia reversa do HP3000 (partoneoftwo/hp3000-weather-station-data e
+  weewx-hp3000).</p>
+</div>
+{% endblock %}

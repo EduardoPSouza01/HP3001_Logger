@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Configuracoes{% endblock %}
+{% block content %}
+<section class="panel settings">
+  <h2>Intervalo de coleta</h2>
+  <p class="muted">De quanto em quanto tempo o programa le o termohigrometro e grava no banco.
+    A mudanca vale imediatamente, sem reiniciar.</p>
+
+  <label>Escolha um intervalo
+    <select id="preset">
+      <optgroup label="Segundos">
+        <option value="1">1 segundo</option>
+        <option value="5">5 segundos</option>
+        <option value="10">10 segundos</option>
+        <option value="15">15 segundos</option>
+        <option value="30">30 segundos</option>
+        <option value="60">60 segundos</option>
+      </optgroup>
+      <optgroup label="Minutos">
+        <option value="300">5 minutos</option>
+        <option value="600">10 minutos</option>
+        <option value="900">15 minutos</option>
+        <option value="1800">30 minutos</option>
+      </optgroup>
+      <optgroup label="Horas">
+        <option value="3600">1 hora</option>
+        <option value="7200">2 horas</option>
+        <option value="21600">6 horas</option>
+        <option value="43200">12 horas</option>
+        <option value="86400">1 vez por dia (24 horas)</option>
+      </optgroup>
+      <option value="custom">Personalizado...</option>
+    </select>
+  </label>
+
+  <div id="customBox" class="custom" hidden>
+    <label>Valor <input type="number" id="customValue" min="1" step="1" value="1"></label>
+    <label>Unidade
+      <select id="customUnit">
+        <option value="1">segundos</option>
+        <option value="60">minutos</option>
+        <option value="3600">horas</option>
+        <option value="86400">dias</option>
+      </select>
+    </label>
+  </div>
+
+  <p id="summary" class="muted"></p>
+  <p id="warn" class="warn" hidden></p>
+
+  <button id="save" class="btn primary" type="button">Salvar</button>
+  <span id="msg" class="msg"></span>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>window.CURRENT_INTERVAL = {{ interval }};</script>
+<script src="{{ url_for('static', filename='settings.js') }}"></script>
+{% endblock %}

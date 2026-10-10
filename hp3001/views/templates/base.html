@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}HP3001{% endblock %} - Termohigrometro</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Termohigrometro HP3001</h1>
+    <nav>
+      <a href="{{ url_for('dashboard.index') }}" class="{{ 'active' if request.endpoint == 'dashboard.index' }}">Painel</a>
+      <a href="{{ url_for('dashboard.history') }}" class="{{ 'active' if request.endpoint == 'dashboard.history' }}">Historico</a>
+      <a href="{{ url_for('dashboard.settings') }}" class="{{ 'active' if request.endpoint == 'dashboard.settings' }}">Configuracoes</a>
+            <a href="{{ url_for('dashboard.about') }}" class="{{ 'active' if request.endpoint == 'dashboard.about' }}">Sobre</a>    </nav>
+    <span id="status" class="status">...</span>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <script src="{{ url_for('static', filename='status.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

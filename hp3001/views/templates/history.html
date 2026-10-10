@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Historico{% endblock %}
+{% block content %}
+<section class="panel">
+  <form method="get" class="filters">
+    <label>De <input type="date" name="start" value="{{ start }}"></label>
+    <label>Ate <input type="date" name="end" value="{{ end }}"></label>
+    <label>Canal
+      <select name="channel">
+        <option value="">Todos</option>
+        {% for c in channels %}
+        <option value="{{ c }}" {{ 'selected' if c == channel }}>{{ label(c) }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">Filtrar</button>
+    <a class="btn" href="{{ url_for('dashboard.history') }}">Limpar</a>
+    <a class="btn primary" href="{{ url_for('dashboard.export', **args) }}">Exportar Excel</a>
+  </form>
+  <div id="live">
+  <p class="muted">{{ total }} registro(s) &middot; atualiza automaticamente</p>
+
+  <table>
+    <thead><tr><th>Data/Hora</th><th>Equipamento</th><th>Canal</th><th>Temperatura</th><th>Umidade</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr>
+        <td>{{ r.recorded_at.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+        <td>{{ r.device_name }}</td>
+        <td>{{ label(r.channel) }}</td>
+        <td>{{ '%.1f'|format(r.temperature_c) if r.temperature_c is not none else '-' }} &deg;C</td>
+        <td>{{ r.humidity if r.humidity is not none else '-' }} %</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="muted">Nenhum registro encontrado.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="pager">
+    {% if page > 1 %}<a class="btn" href="{{ url_for('dashboard.history', page=page-1, **args) }}">&laquo; Anterior</a>{% endif %}
+    <span>Pagina {{ page }} de {{ pages }}</span>
+    {% if page < pages %}<a class="btn" href="{{ url_for('dashboard.history', page=page+1, **args) }}">Proxima &raquo;</a>{% endif %}
+  </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  // Atualiza so a area de dados (mantem filtros e pagina) a cada leitura nova
+  let loading = false;
+  async function refreshHistory() {
+    if (loading) return;
+    loading = true;
+    try {
+      const html = await (await fetch(location.href, { cache: "no-store" })).text();
+      const fresh = new DOMParser().parseFromString(html, "text/html").getElementById("live");
+      if (fresh) document.getElementById("live").innerHTML = fresh.innerHTML;
+    } catch (e) {
+    } finally {
+      loading = false;
+    }
+  }
+  window.onNewReading(refreshHistory);
+  setInterval(() => { if (!document.hidden) refreshHistory(); }, 30000);
+</script>
+{% endblock %}

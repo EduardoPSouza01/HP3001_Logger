@@ -1,0 +1,7 @@
+flask
+hidapi
+pyusb
+sqlalchemy>=2.0
+pyodbc
+openpyxl
+pytest

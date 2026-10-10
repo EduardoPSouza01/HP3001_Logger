@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Painel{% endblock %}
+{% block content %}
+<section id="cards" class="cards" data-interval="{{ interval }}">
+  <p class="muted">Carregando...</p>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Evolucao</h2>
+    <label>Periodo
+      <select id="hours">
+        <option value="1">1 hora</option>
+        <option value="6">6 horas</option>
+        <option value="24" selected>24 horas</option>
+        <option value="72">3 dias</option>
+        <option value="168">7 dias</option>
+      </select>
+    </label>
+  </div>
+  <div class="charts">
+    <div><h3>Temperatura (&deg;C)</h3><canvas id="chartTemp"></canvas></div>
+    <div><h3>Umidade (%)</h3><canvas id="chartHum"></canvas></div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}
